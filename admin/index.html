@@ -6,53 +6,43 @@
   
   <script>
     window.onerror = function(msg, url, line) {
-      alert("⚠️ خطأ تقني:\n" + msg + "\nالموقع: " + url + "\nالسطر: " + line);
+      alert("⚠️ خطأ تقني مكتشف:\nالرسالة: " + msg + "\nالملف: " + url + "\nالسطر: " + line);
       return false;
     };
   </script>
-
-  <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
   <div id="nc-root"></div>
   
+  <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
+  
   <script>
-    // التشغيل المباشر بعد التأكد من تحميل المكتبة
-    (function checkCMS() {
+    // التشغيل مع التحقق من وجود CMS
+    var checkExist = setInterval(function() {
       if (typeof CMS !== 'undefined') {
-        CMS.init({
-          config: {
-            backend: {
-              name: "github",
-              repo: "yassine060793/NYK---Construction",
-              branch: "main"
-            },
-            media_folder: "images/uploads",
-            public_folder: "/images/uploads",
-            site_url: "https://nyk-construction.vercel.app",
-            collections: [
-              { 
-                name: "projects", 
-                label: "المشاريع", 
-                folder: "content/projects", 
-                create: true, 
-                fields: [{label: "Title", name: "title", widget: "string"}] 
+        clearInterval(checkExist);
+        try {
+          CMS.init({
+            config: {
+              backend: {
+                name: "github",
+                repo: "yassine060793/NYK---Construction",
+                branch: "main"
               },
-              { 
-                name: "news", 
-                label: "الأخبار", 
-                folder: "content/news", 
-                create: true, 
-                fields: [{label: "Title", name: "title", widget: "string"}] 
-              }
-            ]
-          }
-        });
-      } else {
-        // إعادة المحاولة بعد 100 ميلي ثانية إذا لم تُحمل المكتبة فوراً
-        setTimeout(checkCMS, 100);
+              media_folder: "images/uploads",
+              public_folder: "/images/uploads",
+              site_url: "https://nyk-construction.vercel.app",
+              collections: [
+                { name: "projects", label: "المشاريع", folder: "content/projects", create: true, fields: [{label: "Title", name: "title", widget: "string"}] },
+                { name: "news", label: "الأخبار", folder: "content/news", create: true, fields: [{label: "Title", name: "title", widget: "string"}] }
+              ]
+            }
+          });
+        } catch (e) {
+          alert("⚠️ خطأ في الإعدادات: " + e.message);
+        }
       }
-    })();
+    }, 200);
   </script>
 </body>
 </html>
