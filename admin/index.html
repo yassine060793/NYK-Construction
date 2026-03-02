@@ -6,18 +6,19 @@
   
   <script>
     window.onerror = function(msg, url, line) {
-      alert("⚠️ خطأ في التحميل:\n" + msg + "\nالموقع: " + url + "\nالسطر: " + line);
+      alert("⚠️ خطأ تقني:\n" + msg + "\nالموقع: " + url + "\nالسطر: " + line);
       return false;
     };
   </script>
 
-  <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js" defer></script>
+  <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
 </head>
 <body>
   <div id="nc-root"></div>
+  
   <script>
-    // التأكد من تحميل المكتبة تماماً قبل تشغيلها
-    window.addEventListener('load', function() {
+    // التشغيل المباشر بعد التأكد من تحميل المكتبة
+    (function checkCMS() {
       if (typeof CMS !== 'undefined') {
         CMS.init({
           config: {
@@ -30,15 +31,28 @@
             public_folder: "/images/uploads",
             site_url: "https://nyk-construction.vercel.app",
             collections: [
-              { name: "projects", label: "المشاريع", folder: "content/projects", create: true, fields: [{label: "Title", name: "title", widget: "string"}] },
-              { name: "news", label: "الأخبار", folder: "content/news", create: true, fields: [{label: "Title", name: "title", widget: "string"}] }
+              { 
+                name: "projects", 
+                label: "المشاريع", 
+                folder: "content/projects", 
+                create: true, 
+                fields: [{label: "Title", name: "title", widget: "string"}] 
+              },
+              { 
+                name: "news", 
+                label: "الأخبار", 
+                folder: "content/news", 
+                create: true, 
+                fields: [{label: "Title", name: "title", widget: "string"}] 
+              }
             ]
           }
         });
       } else {
-        alert("خطأ: لم يتم تحميل مكتبة CMS. تحقق من اتصالك بالإنترنت.");
+        // إعادة المحاولة بعد 100 ميلي ثانية إذا لم تُحمل المكتبة فوراً
+        setTimeout(checkCMS, 100);
       }
-    });
+    })();
   </script>
 </body>
 </html>
