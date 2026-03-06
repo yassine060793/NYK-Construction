@@ -1,6 +1,9 @@
 {
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/studio/(.*)",
+      "destination": "https://95iruxk0.sanity.studio/$1"
+    }
   ]
 }
-
